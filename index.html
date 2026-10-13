@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ELECTROCHEM LAB INVENTORY</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070a1c;--bg2:#101640;--card:rgba(22,29,70,.6);--line:rgba(120,160,255,.2);--tx:#e8ecff;--mut:#9aa4d4;--cy:#22e4ff;--vi:#b14bff;--li:#b6ff3b;--am:#ffb020;--rd:#ff4d6d;--bub:34,228,255;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eef3ff;--bg2:#d9e4ff;--card:rgba(255,255,255,.75);--line:rgba(60,80,170,.22);--tx:#141a3d;--mut:#4d588f;--cy:#0a7fa0;--vi:#7a22d6;--li:#3f8a00;--am:#b36b00;--rd:#c8203f;--bub:10,127,160}}
+:root[data-theme="dark"]{--bg:#070a1c;--bg2:#101640;--card:rgba(22,29,70,.6);--line:rgba(120,160,255,.2);--tx:#e8ecff;--mut:#9aa4d4;--cy:#22e4ff;--vi:#b14bff;--li:#b6ff3b;--am:#ffb020;--rd:#ff4d6d;--bub:34,228,255}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:radial-gradient(1200px 600px at 80% -10%,var(--bg2),transparent 70%),radial-gradient(900px 500px at 0% 20%,rgba(177,75,255,.14),transparent 70%),var(--bg);color:var(--tx);font:400 16px/1.5 Figtree,system-ui,sans-serif}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 18px 40px}
+header{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:44px 0 26px;flex-wrap:wrap}
+h1{margin:0;font:700 clamp(1.45rem,4.2vw,2.6rem)/1.15 Unbounded,Figtree,sans-serif;letter-spacing:.01em;background:linear-gradient(95deg,var(--cy),var(--vi) 60%,var(--li));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(34,228,255,.25))}
+h1 .fl{-webkit-text-fill-color:initial;filter:none}
+.sub{margin:10px 0 0;color:var(--mut);font-size:1.05rem}
+.cell{width:190px;flex:none}
+.arc{stroke-dasharray:6 8;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-28}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 22px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;backdrop-filter:blur(8px)}
+.st b{display:block;font:700 1.6rem/1.1 Unbounded,sans-serif;color:var(--cy)}
+.st:nth-child(2) b{color:var(--vi)}.st:nth-child(3) b{color:var(--am)}.st:nth-child(4) b{color:var(--li)}
+.st span{color:var(--mut);font-size:.85rem}
+.search{position:relative;margin-bottom:14px}
+.search input{width:100%;font:500 1.1rem Figtree,sans-serif;color:var(--tx);background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:17px 22px 17px 54px;outline:none;backdrop-filter:blur(8px);transition:border-color .2s,box-shadow .2s}
+.search input:focus{border-color:var(--cy);box-shadow:0 0 0 4px rgba(34,228,255,.15),0 0 30px rgba(34,228,255,.18)}
+.search svg{position:absolute;left:19px;top:50%;transform:translateY(-50%);width:22px;height:22px;stroke:var(--cy);fill:none;stroke-width:2}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.chip{font:500 .88rem Figtree,sans-serif;color:var(--tx);background:transparent;border:1px solid var(--line);border-radius:99px;padding:6px 14px;cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--cy)}
+.chip[aria-pressed="true"]{background:var(--c,var(--cy));border-color:var(--c,var(--cy));color:#06091c;font-weight:700}
+.lbl{color:var(--mut);font-size:.85rem;margin:14px 0 0}
+.meta{display:flex;justify-content:space-between;align-items:center;margin:16px 0 12px;color:var(--mut);font-size:.9rem}
+.meta button{background:none;border:0;color:var(--cy);font:inherit;cursor:pointer;text-decoration:underline}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:14px}
+.card{--c:var(--cy);position:relative;text-align:left;font:inherit;color:var(--tx);cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px 20px;backdrop-filter:blur(8px);overflow:hidden;transition:transform .18s,border-color .18s,box-shadow .18s}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c);box-shadow:0 0 14px var(--c)}
+.card:hover,.card:focus-visible{transform:translateY(-3px);border-color:var(--c);box-shadow:0 8px 30px -8px var(--c);outline:none}
+.card h3{margin:0 0 4px;font:700 1rem/1.3 Figtree,sans-serif}
+.fm{font:500 1.15rem/1.3 Unbounded,sans-serif;color:var(--c);word-break:break-word;min-height:1.5em}
+.fm sub{font-size:.7em}
+.cas{color:var(--mut);font-size:.82rem;margin:6px 0 10px}
+.pills{display:flex;flex-wrap:wrap;gap:5px}
+.pill{font-size:.72rem;font-weight:700;border-radius:99px;padding:2px 9px;border:1px solid currentColor;color:var(--am)}
+.pill.r{color:var(--rd)}.pill.v{color:var(--vi)}.pill.g{color:var(--mut);font-weight:500}
+.empty{text-align:center;color:var(--mut);padding:60px 10px}
+dialog{max-width:min(560px,calc(100% - 28px));width:100%;border:1px solid var(--c,var(--cy));border-radius:20px;background:var(--bg2);color:var(--tx);padding:24px;box-shadow:0 0 60px -10px var(--c,var(--cy))}
+dialog::backdrop{background:rgba(3,5,18,.7);backdrop-filter:blur(4px)}
+dialog h2{margin:0 36px 4px 0;font:700 1.3rem/1.25 Figtree,sans-serif}
+dialog .fm{font-size:1.7rem;margin:4px 0 14px}
+.x{position:absolute;right:14px;top:12px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--tx);font-size:1.2rem;cursor:pointer}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0 0 14px;font-size:.93rem}
+dt{color:var(--mut)}dd{margin:0}
+.hz{margin:0 0 12px;padding:0;list-style:none;font-size:.92rem}
+.hz li{padding:7px 10px;margin-bottom:5px;border-left:3px solid var(--am);background:rgba(255,176,32,.08);border-radius:0 8px 8px 0}
+.hz li.r{border-color:var(--rd);background:rgba(255,77,109,.09)}
+.note{color:var(--mut);font-size:.82rem;margin:0}
+footer{text-align:center;color:var(--mut);font-size:.82rem;margin-top:40px}
+:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.cell{width:130px}header{padding-top:28px}}
+@media (prefers-reduced-motion:reduce){.arc{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="wrap">
+<header>
+<div>
+<h1><span class="fl">⚗️</span> ELECTROCHEM LAB INVENTORY</h1>
+<p class="sub">Dr.Momeni's Electrochemistry Laboratory</p>
+</div>
+<svg class="cell" viewBox="0 0 190 150" aria-hidden="true">
+<path d="M40 40v82a14 14 0 0 0 14 14h82a14 14 0 0 0 14-14V40" fill="none" stroke="var(--cy)" stroke-width="3" stroke-linecap="round"/>
+<path d="M43 74h104v48a11 11 0 0 1-11 11H54a11 11 0 0 1-11-11z" fill="var(--cy)" opacity=".18"/>
+<rect x="68" y="14" width="9" height="104" rx="3" fill="var(--vi)"/><rect x="113" y="14" width="9" height="104" rx="3" fill="var(--li)"/>
+<path class="arc" d="M77 22l8-9 8 12 8-12 8 12 8-12 5 9h0" fill="none" stroke="var(--am)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="58" y="11" fill="var(--vi)" font-size="13" font-weight="700">−</text><text x="126" y="11" fill="var(--li)" font-size="13" font-weight="700">+</text>
+</svg>
+</header>
+
+<section class="stats" aria-label="Summary">
+<div class="st"><b id="s1">0</b><span>chemicals listed</span></div>
+<div class="st"><b id="s2">6</b><span>categories</span></div>
+<div class="st"><b id="s3">0</b><span>need extra care</span></div>
+<div class="st"><b id="s4">0</b><span>entries to verify</span></div>
+</section>
+
+<div class="search">
+<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+<input id="q" type="search" placeholder="Search by name, formula or CAS number, e.g. NiCl2 or silver nitrate" autocomplete="off" aria-label="Search chemicals">
+</div>
+<p class="lbl">Category</p>
+<div class="chips" id="cats"></div>
+<p class="lbl">Safety filter</p>
+<div class="chips" id="hz"></div>
+
+<div class="meta"><span id="count"></span><button id="reset" hidden>Clear filters</button></div>
+<main class="grid" id="grid"></main>
+<footer>Always read the bottle label and the product SDS before use. Data as of 13 Oct 2026.</footer>
+</div>
+
+<dialog id="dlg"><button class="x" id="cl" aria-label="Close">×</button><div id="dc"></div></dialog>
+
+<script>
+const CATS=[["Metals & Nanocarbon","#22e4ff"],["Transition-Metal Salts","#b14bff"],["Alkali & Alkaline-Earth","#b6ff3b"],["Ammonium","#ffb020"],["Organics & Polymers","#ff5fa8"],["Redox & Buffers","#5b8cff"]];
+const HZ={O:["Oxidizer","Oxidizer: keep away from organic and combustible materials, heat and ignition sources."],T:["Toxic","Toxic: avoid ingestion, inhalation and skin contact."],C:["Corrosive","Corrosive: can burn skin and eyes. Wear gloves and eye protection."],F:["Flammable","Fire hazard: keep away from ignition sources."],K:["Carcinogen","Carcinogenicity hazard."],S:["Sensitizer","May cause sensitization."],W:["Water-reactive","Reacts with moisture: keep dry."],E:["Environmental","Do not dispose of waste down the drain."],X:["Toxic gas risk","Can release toxic gas (cyanide, sulfide or sulfur-containing) on contact with acids: keep away from acids."],H:["Fume hood","Work in a fume hood."],N:["Nano dust","Nanomaterial dust: avoid inhalation."],I:["Irritant","May irritate eyes, skin or respiratory tract."]};
+const RED="KTCXW";
+const D=`Graphene~C (graphene)~7782-42-5~0~Black powder~NH
+Multi-walled carbon nanotubes (MWCNT)~C (nanotube)~308068-56-6~0~Black powder~NH
+Vanadium~V~7440-62-2~0~Metallic solid~T
+Iodine~I2~7553-56-2~0~Solid crystals~IH
+Lithium~Li~7439-93-2~0~Solid metal~W
+Magnesium~Mg~7439-95-4~0~Solid metal~F
+Magnesium oxide~MgO~1309-48-4~0~Solid powder~
+Tungsten~W~7440-33-7~0~Metallic solid~
+Copper(II) acetate~Cu(CH3COO)2.H2O~6046-93-1~1~Crystalline solid~E
+Copper(II) acetate~Cu(CH3COO)2~~1~Solid~
+Cobalt(II) acetate tetrahydrate~Co(CH3COO)2.4H2O~6147-53-1~1~Crystalline solid~STH
+Cobalt(II) acetate~Co(CH3COO)2~~1~Solid~S
+Manganese(II) acetate tetrahydrate~Mn(CH3COO)2.4H2O~6156-78-1~1~Crystalline solid~I
+Nickel(II) acetate tetrahydrate~Ni(CH3COO)2.4H2O~6018-89-9~1~Crystalline solid~KSH
+Nickel(II) acetate~Ni(CH3COO)2~~1~Solid~KS
+Magnesium acetate~Mg(CH3COO)2~142-72-3~1~Solid~
+Cadmium chloride~CdCl2~10108-64-2~1~Crystalline solid~KTH
+Cadmium chloride monohydrate~CdCl2.H2O~7790-78-5~1~Crystalline solid~TEH
+Cadmium nitrate hydrate~Cd(NO3)2.4H2O~10022-68-1~1~Crystalline solid~KOTH
+Cadmium nitrate~Cd(NO3)2~~1~Solid~KOTH
+Cobalt(II) chloride~CoCl2~~1~Solid~S
+Chromium(III) chloride~CrCl3~10025-73-7~1~Solid~E
+Copper(I) chloride~CuCl~7758-89-6~1~Solid~I
+Iron(III) chloride hexahydrate~FeCl3.6H2O~10025-77-1~1~Crystalline solid~C
+Iron(II) chloride~FeCl2~7758-94-3~1~Solid~
+Manganese(II) chloride~MnCl2~7773-01-5~1~Crystalline solid~I
+Nickel(II) chloride hexahydrate~NiCl2.6H2O~7791-20-0~1~Crystalline solid~KSH
+Magnesium chloride~MgCl2~~1~Solid~
+Magnesium chloride hexahydrate~MgCl2.6H2O~7791-18-6~1~Crystalline solid~
+Bismuth(III) nitrate pentahydrate~Bi(NO3)3.5H2O~10035-06-0~1~Crystalline solid~OC
+Bismuth subnitrate~Bi5H9N4O22~1304-85-4~1~Solid powder~OF
+Cobalt(II) nitrate~Co(NO3)2~~1~Solid~OS
+Copper(II) nitrate trihydrate~Cu(NO3)2.3H2O~10031-43-3~1~Crystalline solid~OFE
+Copper(II) nitrate~Cu(NO3)2~~1~Solid~OF
+Iron(III) nitrate~Fe(NO3)3~~1~Solid~O
+Iron(III) nitrate tetrahydrate~Fe(NO3)3.4H2O~~1~Crystalline solid~O
+Iron(II) nitrate nonahydrate~Fe(NO3)2.9H2O~14013-86-6~1~Crystalline solid~O
+Platinum(II) nitrate~Pt(NO3)2~18496-40-7~1~Solid~H
+Manganese(II) nitrate tetrahydrate~Mn(NO3)2.4H2O~10377-66-9~1~Crystalline solid~OF
+Silver nitrate~AgNO3~7761-88-8~1~Crystalline solid~OC
+Zinc nitrate hexahydrate~Zn(NO3)2.6H2O~10196-18-6~1~Crystalline solid~OF
+Zinc sulfate heptahydrate~ZnSO4.7H2O~7446-20-0~1~Crystalline solid~E
+Iron(III) sulfate~Fe2(SO4)3~10028-22-5~1~Solid~
+Tin(II) sulfate~SnSO4~7488-55-3~1~Solid~
+Hexaamminecobalt(III) chloride~[Co(NH3)6]Cl3~10534-89-1~1~Crystalline solid~
+Potassium hexacyanocobaltate(III)~K3[Co(CN)6]~13963-58-1~1~Solid~X
+Potassium ferrocyanide trihydrate~K4[Fe(CN)6].3H2O~14459-95-1~1~Yellow crystals~XO
+Potassium ferricyanide~K3[Fe(CN)6]~13746-66-2~1~Red crystals~X
+Lead(II) chloride dihydrate~PbCl2.2H2O~10025-84-0~1~White crystals~TE
+Lead(II) nitrate~Pb(NO3)2~10099-74-8~1~Crystalline solid~OT
+Barium carbonate~BaCO3~513-77-9~1~White powder~T
+Zinc carbonate (to verify)~ZnCO3~~1~Powder~
+Zinc chloride~ZnCl2~7646-85-7~1~Solid~C
+Zinc oxide (to verify)~ZnO~~1~Powder~
+Copper(II) carbonate (to verify)~CuCO3~~1~Powder~
+Aluminium nitrate nonahydrate~Al(NO3)3.9H2O~7784-27-2~1~Crystalline solid~OF
+Aluminium sulfate (to verify)~Al2(SO4)3~~1~Solid~
+Aluminium chloride (anhydrous)~AlCl3~7446-70-0~1~Solid~W
+Aluminium chloride hexahydrate~AlCl3.6H2O~7784-13-6~1~Crystalline solid~
+Sodium chloride~NaCl~7647-14-5~2~White powder/crystals~
+Potassium chloride~KCl~7447-40-7~2~White powder/crystals~
+Potassium sulfate~K2SO4~7778-80-5~2~White powder~
+Sodium hydroxide~NaOH~1310-73-2~2~White pearls/powder~C
+Potassium hydroxide~KOH~1310-58-3~2~White pearls/powder~C
+Sodium fluoride~NaF~7681-49-4~2~White powder~TI
+Sodium chlorate~NaClO3~7775-09-9~2~White powder/crystals~OF
+Sodium nitrate~NaNO3~7631-99-4~2~White powder/crystals~OFI
+Sodium sulfate~Na2SO4~7757-82-6~2~White powder~
+Sodium sulfite~Na2SO3~7757-83-7~2~White powder~XI
+Sodium thiosulfate~Na2S2O3.5H2O~10102-17-7~2~White crystals~X
+Sodium dodecyl sulfate (SDS)~CH3(CH2)11OSO3Na~151-21-3~2~White powder~I
+Sodium sulfide hydrate~Na2S.xH2O~1313-84-4~2~Yellow crystals/powder~CTX
+Sodium sulfide (anhydrous)~Na2S~1313-82-2~2~Yellow to pale-yellow powder~CTX
+Sodium pyrophosphate decahydrate~Na4P2O7.10H2O~13472-36-1~2~White crystals~I
+Sodium pyrophosphate (anhydrous)~Na4P2O7~7722-88-5~2~White powder~I
+Disodium hydrogen phosphate~Na2HPO4~7558-79-4~2~White powder~I
+Potassium dihydrogen phosphate~KH2PO4~7778-77-0~2~White crystals~I
+Dipotassium hydrogen phosphate~K2HPO4~7758-11-4~2~White powder/crystals~I
+Tripotassium phosphate~K3PO4~7778-53-2~2~White crystals/powder~CI
+Potassium nitrate~KNO3~7757-79-1~2~White crystals~OFI
+Potassium bromide~KBr~7758-02-3~2~White powder/crystals~I
+Potassium hypophosphite (incomplete entry)~KH2PO2~~2~Solid~
+Magnesium chloride hydrate~MgCl2.xH2O~~2~Solid~
+Magnesium sulfate~MgSO4~7487-88-9~2~Solid~
+Ammonium chloride~NH4Cl~12125-02-9~3~White powder/crystals~I
+Ammonium fluoride~NH4F~12125-01-8~3~White powder/crystals~CTH
+Ammonium acetate~NH4CH3COO~631-61-8~3~White crystals~I
+Ammonium sulfate~(NH4)2SO4~7783-20-2~3~White powder~I
+Ammonium persulfate~(NH4)2S2O8~7727-54-0~3~White crystals~OSI
+Ammonium nitrate~NH4NO3~6484-52-2~3~White powder/crystals~OF
+Ammonium oxalate~(NH4)2C2O4~1113-38-8~3~White powder~TI
+Ammonium thiocyanate (incomplete entry)~NH4SCN~1762-95-4~3~White crystals~X
+Ammonia solution (to verify)~NH3(aq)~1336-21-6~3~Liquid~
+Terephthalic acid~C8H6O4~100-21-0~4~White powder~I
+Thiourea~CH4N2S~62-56-6~4~White crystals~KI
+Polyvinylpyrrolidone (PVP)~(C6H9NO)n~9003-39-8~4~White powder~
+Polyvinylidene fluoride (PVDF)~(CH2CF2)n~24937-79-9~4~White powder~T
+Citric acid monohydrate~C6H8O7.H2O~5949-29-1~4~White crystals~I
+Salicylic acid~C7H6O3~69-72-7~4~White powder~I
+Melamine~C3H6N6~108-78-1~4~White powder~I
+Glycerol (Glycerin)~C3H8O3~56-81-5~4~Colorless viscous liquid~I
+Acetonitrile~CH3CN~75-05-8~4~Colorless liquid~FH
+Iron(III) citrate~FeC6H5O7~2338-05-8~4~Reddish-brown powder~I
+Trisodium citrate dihydrate~Na3C6H5O7.2H2O~6132-04-3~4~White crystals~I
+Hexamethylenetetramine (HMTA)~C6H12N4~100-97-0~4~White crystals~FI
+Sodium acetate~CH3COONa~127-09-3~4~White powder/crystals~I
+Sodium borohydride~NaBH4~16940-66-2~5~White powder~F
+Potassium permanganate~KMnO4~7722-64-7~5~Purple crystals~O
+Thiocyanate/cyanide species (incomplete)~~~5~~X
+Silicone grease~~~5~Paste~
+Boric acid~H3BO3~10043-35-3~5~White powder/crystals~T`;
+const R=D.split("\n").map(l=>{const a=l.split("~");let n=a[0],v=/\((to verify|incomplete[^)]*)\)/i.test(n);n=n.replace(/\s*\((to verify|incomplete[^)]*)\)/i,"");return{n,f:a[1],cas:a[2],c:+a[3],s:a[4],h:a[5]||"",v,hay:(n+" "+a[1].replace(/[.\s]/g,"")+" "+a[2]).toLowerCase()}}).sort((a,b)=>a.n.localeCompare(b.n));
+const $=id=>document.getElementById(id);
+const sub=f=>f?f.replace(/\./g,"·").replace(/([A-Za-z)\]])(\d+)/g,"$1<sub>$2</sub>"):"—";
+let cat=-1,hz=new Set,q="";
+$("s1").textContent=R.length;$("s3").textContent=R.filter(r=>[...r.h].some(x=>RED.includes(x))).length;$("s4").textContent=R.filter(r=>r.v).length;
+function chip(box,label,col,on){const b=document.createElement("button");b.className="chip";b.textContent=label;b.setAttribute("aria-pressed","false");if(col)b.style.setProperty("--c",col);b.onclick=()=>{on(b);render()};box.appendChild(b);return b}
+const cb=[chip($("cats"),"All","",()=>{cat=-1;sync()})];
+CATS.forEach((c,i)=>cb.push(chip($("cats"),c[0],c[1],()=>{cat=i;sync()})));
+function sync(){cb.forEach((b,i)=>b.setAttribute("aria-pressed",i===cat+1))}sync();
+Object.keys(HZ).filter(k=>"OTCFKX".includes(k)).forEach(k=>chip($("hz"),HZ[k][0],"",b=>{hz.has(k)?hz.delete(k):hz.add(k);b.setAttribute("aria-pressed",hz.has(k))}));
+function pills(r,all){const ks=[...r.h].filter(k=>all||"OTCFKXWS".includes(k));const m=all?ks:ks.slice(0,3);let h=m.map(k=>`<span class="pill ${"KTCX".includes(k)?"r":""}">${HZ[k][0]}</span>`).join("");if(!all&&ks.length>3)h+=`<span class="pill g">+${ks.length-3}</span>`;if(r.v)h+=`<span class="pill v">To verify</span>`;return h}
+function render(){
+const t=q.toLowerCase().split(/\s+/).filter(Boolean).map(x=>x.replace(/\./g,""));
+const L=R.filter(r=>(cat<0||r.c===cat)&&[...hz].every(k=>r.h.includes(k))&&t.every(x=>r.hay.includes(x)));
+$("count").textContent=L.length+" of "+R.length+" chemicals";
+$("reset").hidden=!(q||cat>=0||hz.size);
+$("grid").innerHTML=L.length?L.map(r=>`<button class="card" style="--c:${CATS[r.c][1]}" data-i="${R.indexOf(r)}"><h3>${r.n}</h3><div class="fm">${sub(r.f)}</div><div class="cas">${r.cas?"CAS "+r.cas:"CAS not recorded"}</div><div class="pills">${pills(r)}</div></button>`).join(""):`<div class="empty" style="grid-column:1/-1"><p style="font-size:1.1rem">No chemical matches "${q.replace(/</g,"&lt;")}".</p><p>Check the spelling, try the formula, or clear the filters.</p></div>`}
+$("grid").onclick=e=>{const c=e.target.closest(".card");if(!c)return;const r=R[+c.dataset.i],d=$("dlg");d.style.setProperty("--c",CATS[r.c][1]);
+$("dc").innerHTML=`<h2>${r.n}</h2><div class="fm">${sub(r.f)}</div><dl><dt>CAS</dt><dd>${r.cas||"Not recorded"}</dd><dt>Category</dt><dd>${CATS[r.c][0]}</dd><dt>Form</dt><dd>${r.s||"Not recorded"}</dd><dt>In stock</dt><dd>Not recorded yet</dd><dt>Shelf</dt><dd>Not recorded yet</dd></dl>${r.h?`<ul class="hz">${[...r.h].map(k=>`<li class="${"KTCX".includes(k)?"r":""}">${HZ[k][1]}</li>`).join("")}</ul>`:""}${r.v?`<p class="note">This entry still needs to be verified against the bottle label.</p>`:""}<p class="note">Consult the product SDS for handling, storage and disposal requirements.</p>`;d.showModal()};
+$("q").oninput=e=>{q=e.target.value.trim();render()};
+$("reset").onclick=()=>{q="";$("q").value="";cat=-1;hz.clear();document.querySelectorAll("#hz .chip").forEach(b=>b.setAttribute("aria-pressed","false"));sync();render()};
+$("cl").onclick=()=>$("dlg").close();
+$("dlg").onclick=e=>{if(e.target.id==="dlg")e.target.close()};
+document.addEventListener("keydown",e=>{if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){e.preventDefault();$("q").focus()}});
+render();
+// rising bubbles
+(function(){const c=$("fx"),x=c.getContext("2d");let W,H,B=[];function rs(){W=c.width=innerWidth;H=c.height=innerHeight}rs();addEventListener("resize",rs);
+for(let i=0;i<34;i++)B.push({x:Math.random()*W,y:Math.random()*H,r:2+Math.random()*7,v:.25+Math.random()*.6,p:Math.random()*6});
+const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function f(t){x.clearRect(0,0,W,H);const rgb=getComputedStyle(document.documentElement).getPropertyValue("--bub").trim()||"34,228,255";
+B.forEach(b=>{if(!still){b.y-=b.v;b.x+=Math.sin(t/900+b.p)*.3;if(b.y<-10){b.y=H+10;b.x=Math.random()*W}}
+x.beginPath();x.arc(b.x,b.y,b.r,0,7);x.strokeStyle=`rgba(${rgb},.35)`;x.lineWidth=1.2;x.stroke();x.fillStyle=`rgba(${rgb},.05)`;x.fill()});
+if(!still)requestAnimationFrame(f)}
+requestAnimationFrame(f)})();
+</script>
+</body>
+</html>
